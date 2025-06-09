@@ -1,0 +1,160 @@
+{
+  "name": "MCP-Server-Client",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "617d1d9b-50e9-41c2-b5ac-88f584e1949d"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1800,
+        -20
+      ],
+      "id": "39d800e7-2189-4f1e-a23b-f9a7adf7bce4",
+      "name": "MCP Server Trigger",
+      "webhookId": "617d1d9b-50e9-41c2-b5ac-88f584e1949d"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        -1700,
+        200
+      ],
+      "id": "fccf0ffd-5900-41c9-ba2f-bd4c59ddd91b",
+      "name": "Gmail",
+      "webhookId": "a2a56783-ae08-4c26-8bd4-ebe3cdef82d6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FFHjIuGJryrjgDNE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -720,
+        0
+      ],
+      "id": "1d2ff91f-130a-4bf0-aae8-c66a547dc4c2",
+      "name": "When chat message received",
+      "webhookId": "0466fd86-6851-4ff9-a488-d960d53c1946"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        -100
+      ],
+      "id": "1d5dd3c2-e66c-4a9d-94ca-2308178e8c58",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -472,
+        120
+      ],
+      "id": "96ac0820-3e2d-4c24-8238-8ca941bf0898",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7BAUKPa9iFildmuG",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://trainltsds.app.n8n.cloud/mcp-test/617d1d9b-50e9-41c2-b5ac-88f584e1949d/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        100
+      ],
+      "id": "1f2d9193-f864-4fcc-830c-fa6f15e71f82",
+      "name": "MCP Client",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ac91cff9-2dc2-40b6-9e97-5d305c168d48",
+  "meta": {
+    "instanceId": "bff9db5afafbae516a9bd140632cb9631f2824f490d816e838d1998eff404d39"
+  },
+  "id": "QLjspWUYIufJtt0v",
+  "tags": []
+}
